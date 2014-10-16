@@ -7,9 +7,14 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.SkyIsland.SecretVillager.Villager.InvicibleVillager;
+import com.SkyIsland.SecretVillager.Villager.SecretVillager;
+
 public class SecretVillagerPlugin extends JavaPlugin {
 	
 	public static SecretVillagerPlugin plugin;
+	
+	private static final double version = 1.00;
 	
 	private YamlConfiguration config;
 	private YamlConfiguration villagerConfig;
@@ -34,6 +39,13 @@ public class SecretVillagerPlugin extends JavaPlugin {
 		else {
 			try {
 				config.load(configFile);
+				if (config.getDouble("version", 0.00) - SecretVillagerPlugin.version > .00001) {
+					//if versions aren't equal
+					getLogger().info("Found a config file with an old version!\n"
+							+ "Ignoring. Newer versions might specify more parameters that are required"
+							+ "to properly use this plugin! Please upgrade your config file to version " + SecretVillagerPlugin.version  + "!");
+										
+				}
 			} catch (IOException
 					| InvalidConfigurationException e) {
 				e.printStackTrace();
@@ -72,6 +84,8 @@ public class SecretVillagerPlugin extends JavaPlugin {
 			return;
 		}
 		SecretVillagerPlugin.plugin = this;
+		
+		
 	}
 	
 	@Override
@@ -92,5 +106,30 @@ public class SecretVillagerPlugin extends JavaPlugin {
 	private YamlConfiguration defaultConfig() {
 		
 		return null;
+	}
+	
+	private SecretVillager createFromConfig(YamlConfiguration villager) {
+		if (villager.getInt("Type", -1) == -1) {
+			//defaults to -1
+			getLogger().info("Error when parsing villagers: Unable to find villager type in " + villager.getName());
+			return null;
+		}
+		
+		SecretVillager sVil = null;
+		VillagerType type = VillagerType.fromIndex(villager.getInt("Type", 0));
+		
+		switch (type) {
+		case INVINCIBLE:
+			sVil = new InvicibleVillager(villager);
+			break;
+		case TRADE_SWAPPED:
+			break;
+		case BOTH:
+			break;
+		}
+		
+		
+		
+		return sVil;
 	}
 }
