@@ -13,10 +13,10 @@ public class SecretVillagerPlugin extends JavaPlugin {
 	
 	private YamlConfiguration config;
 	private YamlConfiguration villagerConfig;
+	private File configFile, villagerFile;
 	
 	@Override
 	public void onLoad() {
-		File configFile, villagerFile;
 		configFile = new File(this.getDataFolder(), "config.yml");
 		if (!configFile.exists()) {
 			getLogger().info("Configuration file for Secret Villager plugin not found in data folder!\n"
@@ -76,6 +76,13 @@ public class SecretVillagerPlugin extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
+		try {
+			config.save(configFile);
+			villagerConfig.save(villagerFile);
+		} catch (IOException e) {
+			getLogger().info("\n\n\nUnable to save config files for SecretVillager!!!!!!!!!!!!!!!!!!!\n\n\n");
+		}
+		
 		
 	}
 	
