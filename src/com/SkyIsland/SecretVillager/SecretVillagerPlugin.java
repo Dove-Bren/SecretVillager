@@ -1,7 +1,6 @@
 package com.SkyIsland.SecretVillager;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -66,6 +65,12 @@ public class SecretVillagerPlugin extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
+		//first thing we do is make sure config isn't null. If it is, there was a problem during
+		//load and we just want to stop the plugin for even enabling
+		if (config == null || villagerConfig == null) {
+			this.getPluginLoader().disablePlugin(this);
+			return;
+		}
 		SecretVillagerPlugin.plugin = this;
 	}
 	
