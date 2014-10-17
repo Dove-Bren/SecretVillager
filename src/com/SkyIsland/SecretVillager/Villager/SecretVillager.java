@@ -1,5 +1,6 @@
 package com.SkyIsland.SecretVillager.Villager;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 
@@ -32,7 +33,7 @@ public interface SecretVillager {
 	 * saved with this secret villager's unique type.</p>
 	 * @return
 	 */
-	public void load(YamlConfiguration config);
+	public void load(ConfigurationSection config);
 	
 	/**
 	 * Returns the entity that is stored and accepted to be the villager.<br />

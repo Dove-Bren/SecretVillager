@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -79,9 +78,9 @@ public class TradeVillager implements SecretVillager {
 	
 	private Villager villager;
 	private List<VillagerTrade> tradeList;
-	private YamlConfiguration config;
+	private ConfigurationSection config;
 	
-	public TradeVillager(YamlConfiguration config) {
+	public TradeVillager(ConfigurationSection config) {
 		tradeList = new LinkedList<VillagerTrade>();
 		load(config);
 	}
@@ -154,7 +153,7 @@ public class TradeVillager implements SecretVillager {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void load(YamlConfiguration config) {
+	public void load(ConfigurationSection config) {
 		unload();
 		
 		this.config = config;

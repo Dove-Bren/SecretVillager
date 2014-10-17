@@ -3,6 +3,7 @@ package com.SkyIsland.SecretVillager.Villager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -25,7 +26,7 @@ public class InvincibleVillager implements SecretVillager, Listener{
 	
 	private Villager villager = null;
 	
-	public InvincibleVillager(YamlConfiguration villagerInfo) {
+	public InvincibleVillager(ConfigurationSection villagerInfo) {
 		Bukkit.getPluginManager().registerEvents(this, SecretVillagerPlugin.plugin);
 		this.load(villagerInfo);
 	}
@@ -59,7 +60,7 @@ public class InvincibleVillager implements SecretVillager, Listener{
 	}
 
 	@Override
-	public void load(YamlConfiguration config) {
+	public void load(ConfigurationSection config) {
 		unload();
 		
 		World world;
