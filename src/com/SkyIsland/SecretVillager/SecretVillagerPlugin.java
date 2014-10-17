@@ -7,7 +7,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.SkyIsland.SecretVillager.Villager.InvicibleVillager;
+import com.SkyIsland.SecretVillager.Villager.InvincibleVillager;
 import com.SkyIsland.SecretVillager.Villager.SecretVillager;
 
 public class SecretVillagerPlugin extends JavaPlugin {

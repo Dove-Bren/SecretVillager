@@ -15,11 +15,11 @@ import com.SkyIsland.SecretVillager.SecretVillagerPlugin;
  * @author Skyler
  *
  */
-public class InvicibleVillager implements SecretVillager, Listener{
+public class InvincibleVillager implements SecretVillager, Listener{
 	
 	private Villager villager;
 	
-	public InvicibleVillager(YamlConfiguration villagerInfo) {
+	public InvincibleVillager(YamlConfiguration villagerInfo) {
 		Bukkit.getPluginManager().registerEvents(this, SecretVillagerPlugin.plugin);
 		this.load(villagerInfo);
 	}
