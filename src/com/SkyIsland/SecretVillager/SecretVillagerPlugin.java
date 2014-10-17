@@ -134,11 +134,25 @@ public class SecretVillagerPlugin extends JavaPlugin {
 		} catch (IOException e) {
 			getLogger().info("\n\n\nUnable to save config files for SecretVillager!!!!!!!!!!!!!!!!!!!\n\n\n");
 		}
-		
+		int i = 0;
+		config = null;
+		config = new YamlConfiguration();
+		//Iterate over every villager and save out their data to a unique key
 		for (SecretVillager SV : villagers) {
+			//Saves Villager name as "Villager_n"
+			config.set("Villager_" + i, SV.toConfig());
+			//Unload Villager from memory
 			SV.unload();
+			i++;
 		}
-		
+		try {
+			config.save(villagerFile);
+		} catch (IOException e) {
+			//This should never ever happen unless something catastrophic happens
+			//Pray to Jesus that it doesn't
+			getLogger().info("\n\n\nCOULD NOT SAVE CONFIGURATION DATA ON DISABLE\n\n\n");
+			e.printStackTrace();
+		}
 		villagers.clear();
 	}
 	
@@ -154,7 +168,7 @@ public class SecretVillagerPlugin extends JavaPlugin {
 		return def;
 	}
 	
-	private void extractVillager(YamlConfiguration villager) {
+	private void extractVillagers(YamlConfiguration villager) {
 		Set <String> villagers;
 		YamlConfiguration vilConfig = new YamlConfiguration();
 		villagers = villager.getKeys(false);
@@ -163,6 +177,7 @@ public class SecretVillagerPlugin extends JavaPlugin {
 			createFromConfig(vilConfig);
 		}
 	}
+	
 	private SecretVillager createFromConfig(YamlConfiguration villager) {
 		if (villager.getInt("Type", -1) == -1) {
 			//defaults to -1
