@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Villager;
@@ -180,16 +181,16 @@ public class SecretVillagerPlugin extends JavaPlugin {
 	
 	private void extractVillagers(YamlConfiguration villager) {
 		Set <String> villagers;
-		YamlConfiguration vilConfig = new YamlConfiguration();
+		//YamlConfiguration vilConfig = new YamlConfiguration();
 		villagers = villager.getKeys(false);
 		for (String s : villagers) {
 			if (s.trim().isEmpty())
 				continue;
-			createFromConfig(villager.getConfigurationSection(s);
+			createFromConfig(villager.getConfigurationSection(s));
 		}
 	}
 	
-	private SecretVillager createFromConfig(YamlConfiguration villager) {
+	private SecretVillager createFromConfig(ConfigurationSection villager) {
 		if (villager.getInt("type", -1) == -1) {
 			//defaults to -1
 			getLogger().info("Error when parsing villagers: Unable to find villager type in " + villager.getName());
