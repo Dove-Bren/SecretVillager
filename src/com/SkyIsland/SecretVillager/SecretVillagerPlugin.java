@@ -7,10 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Villager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import com.SkyIsland.SecretVillager.Villager.InvincibleVillager;
 import com.SkyIsland.SecretVillager.Villager.SecretVillager;
