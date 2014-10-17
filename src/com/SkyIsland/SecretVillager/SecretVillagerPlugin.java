@@ -5,13 +5,20 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Villager;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import com.SkyIsland.SecretVillager.Villager.InvincibleVillager;
 import com.SkyIsland.SecretVillager.Villager.SecretVillager;
+import com.SkyIsland.SecretVillager.Villager.TradeVillager;
+import com.gmail.fedmanddev.VillagerTrade;
 
 public class SecretVillagerPlugin extends JavaPlugin {
 	
@@ -34,7 +41,12 @@ public class SecretVillagerPlugin extends JavaPlugin {
 			villager.set("location", vect);
 			villager.set("profession", Villager.Profession.BUTCHER.toString());
 			
-			villagers.add(new InvincibleVillager(villager));
+			VillagerTrade trade = new VillagerTrade(new ItemStack(Material.ARROW, 40), null, new ItemStack(Material.ARROW, 44)    );
+			
+			villager.set("trades.trade" + "0" + ".item1", VillagerTrade.getItem1(trade).serialize());
+			
+			villager.set("trades.trade" + "0" + ".reward", VillagerTrade.getRewardItem(trade).serialize());
+			villagers.add(new TradeVillager(villager));
 			extractVillagers(config);
 		}
 	};

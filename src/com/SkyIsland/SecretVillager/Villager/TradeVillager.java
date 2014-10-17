@@ -43,7 +43,7 @@ public class TradeVillager implements SecretVillager {
 	 * @param trade
 	 */
 	public void addTrade(VillagerTrade trade) {
-		if (villager == null) {
+		if (villager == null || trade == null) {
 			return;
 		}
 		VillagerTradeApi.addTrade(villager, trade);
@@ -143,11 +143,29 @@ public class TradeVillager implements SecretVillager {
 		for (String key : trades.getKeys(false)) {
 						
 			tradeS = trades.getConfigurationSection(key);
-			item1 = ItemStack.deserialize((Map<String, Object>) tradeS.get("item1", null));
-			item2 = ItemStack.deserialize((Map<String, Object>) tradeS.get("item2", null));
-			reward = ItemStack.deserialize((Map<String, Object>) tradeS.get("reward", null));
+			Object i1, i2, re;
+			i1 =  tradeS.get("item1", null);
+			i2 = tradeS.get("item2", null);
+			re = tradeS.get("reward", null);
+			if (i1 == null || re == null) {
+				continue;
+			}
+			item1 = ItemStack.deserialize((Map<String, Object>) i1);
+			if (i2 != null) {
+				item2 = ItemStack.deserialize((Map<String, Object>) i2);
+			}
+			else {
+				item2 = null;
+			}
+			reward = ItemStack.deserialize((Map<String, Object>) re);
+			VillagerTrade trade;
+			if (item2 != null) {
+				trade = new VillagerTrade(item1, item2, reward);
+			}
+			else {
+				trade = new VillagerTrade(item1, reward);
+			}
 			
-			VillagerTrade trade = new VillagerTrade(item1, item2, reward);
 			this.addTrade(trade);
 		}
 	}
