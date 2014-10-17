@@ -20,6 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import com.SkyIsland.SecretVillager.Villager.InvincibleTradeVillager;
 import com.SkyIsland.SecretVillager.Villager.InvincibleVillager;
 import com.SkyIsland.SecretVillager.Villager.SecretVillager;
 import com.SkyIsland.SecretVillager.Villager.TradeVillager;
@@ -38,28 +39,28 @@ public class SecretVillagerPlugin extends JavaPlugin {
 	private BukkitRunnable waitForLoad = new BukkitRunnable(){
 		
 		public void run() {
-//			YamlConfiguration villager = new YamlConfiguration();
-//			Vector vect = new Vector(1494, 64, 60);
-//			villager.set("name", "the saviour");
-//			villager.set("world", "HomeWorld");
-//			villager.set("location", vect);
-//			villager.set("profession", Villager.Profession.BLACKSMITH.toString());
-//			
-//			ItemStack egg = new SpawnEgg(EntityType.ENDER_DRAGON).toItemStack(1);
-//			ItemMeta meta = egg.getItemMeta();
-//			
-//			meta.setDisplayName("Easter Egg: " + "Dragon Egg");
-//			
-//			List<String> lore = new LinkedList<String>();
-//			lore.add(ChatColor.BLACK + "The Egg of an Ender Dragon");
-//			meta.setLore(lore);
-//			
-//			egg.setItemMeta(meta);
-//			
-//			villager.set("trades.trade0.item1", egg);//.serialize());
-//			villager.set("trades.trade0.reward", new ItemStack(Material.DIAMOND, 20));//.serialize());
-//			
-//			villagers.add(new TradeVillager(villager));
+			YamlConfiguration villager = new YamlConfiguration();
+			Vector vect = new Vector(1494, 64, 60);
+			villager.set("name", "the saviour");
+			villager.set("world", "HomeWorld");
+			villager.set("location", vect);
+			villager.set("profession", Villager.Profession.BLACKSMITH.toString());
+			
+			ItemStack egg = new SpawnEgg(EntityType.ENDER_DRAGON).toItemStack(1);
+			ItemMeta meta = egg.getItemMeta();
+			
+			meta.setDisplayName("Easter Egg: " + "Dragon Egg");
+			
+			List<String> lore = new LinkedList<String>();
+			lore.add(ChatColor.BLACK + "The Egg of an Ender Dragon");
+			meta.setLore(lore);
+			
+			egg.setItemMeta(meta);
+			
+			villager.set("trades.trade0.item1", egg);//.serialize());
+			villager.set("trades.trade0.reward", new ItemStack(Material.DIAMOND, 20));//.serialize());
+			
+			villagers.add(new InvincibleTradeVillager(villager));
 			
 			extractVillagers(villagerConfig);
 		}
@@ -223,6 +224,8 @@ public class SecretVillagerPlugin extends JavaPlugin {
 			villagers.add(sVil);
 			break;
 		case BOTH:
+			sVil = new InvincibleTradeVillager(villager);
+			villagers.add(sVil);
 			break;
 		}
 		

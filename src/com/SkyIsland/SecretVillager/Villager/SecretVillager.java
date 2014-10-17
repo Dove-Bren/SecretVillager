@@ -8,6 +8,19 @@ import org.bukkit.entity.Entity;
 /**
  * Represents a secret villager, which is both the in-game villager as well as that villager's API-defined
  * specs.
+ * <p>
+ * A big consideration is whether InvincibleVillager and TradeVillager should be interfaces or abstract classes
+ * or what. If there were only going to be two types (like invincible and trade) it would make sense the way
+ * things are set up now. They have a little duplicated code, but generally it's not exactly the same. The
+ * situation becomes a little less stable when you want to create a InvincibleTrade villager. It's pretty
+ * much just a TradeVillager, but has the event catching the Invincible has. It has the config and everything of
+ * a trade villager. So invincible should be abstract, maybe? Or just a class that you extend... But then
+ * trade villager and invincible trade villager will have the exact same code, except that InvincibleTrade
+ * villager will also extend InvincibleVillager and have one line added to the constructor. hmm...
+ * </p>
+ * <p >
+ * For now, each class is their own concrete class and can be instantiated at any stage. There's a lot of
+ * code sharing going on and not a whole lot of object oriented design.</p>
  * @author Skyler
  *
  */

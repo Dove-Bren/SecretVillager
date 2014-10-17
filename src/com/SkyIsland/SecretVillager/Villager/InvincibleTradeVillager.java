@@ -11,6 +11,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -30,7 +34,7 @@ import com.gmail.fedmanddev.VillagerTradeApi;
  * @author Skyler
  *
  */
-public class TradeVillager implements SecretVillager {
+public class InvincibleTradeVillager implements SecretVillager, Listener {
 	
 	private BukkitRunnable initTrades = new BukkitRunnable() {
 		
@@ -80,8 +84,9 @@ public class TradeVillager implements SecretVillager {
 	private List<VillagerTrade> tradeList;
 	private ConfigurationSection config;
 	
-	public TradeVillager(ConfigurationSection config) {
+	public InvincibleTradeVillager(ConfigurationSection config) {
 		tradeList = new LinkedList<VillagerTrade>();
+		Bukkit.getPluginManager().registerEvents(this, SecretVillagerPlugin.plugin);
 		load(config);
 	}
 	
@@ -117,7 +122,7 @@ public class TradeVillager implements SecretVillager {
 		 */
 		YamlConfiguration config = new YamlConfiguration();
 		
-		config.set("type", VillagerType.TRADE_SWAPPED.getIndex());
+		config.set("type", VillagerType.BOTH.getIndex());
 		config.set("world", villager.getWorld().getName());
 		config.set("location", villager.getLocation().toVector());
 		config.set("name", villager.getCustomName());
@@ -211,6 +216,14 @@ public class TradeVillager implements SecretVillager {
 		if (villager != null && !villager.isDead()) {
 			villager.damage(villager.getMaxHealth());
 			villager = null;
+		}
+	}
+	
+	@EventHandler
+	public void onDamage(EntityDamageEvent e) {
+		if (villager != null && !e.isCancelled() && e.getCause().compareTo(DamageCause.CUSTOM) != 0 && e.getEntity().getUniqueId().compareTo(this.getVillager().getUniqueId()) == 0) {
+			e.setCancelled(true);
+			return;
 		}
 	}
 }
