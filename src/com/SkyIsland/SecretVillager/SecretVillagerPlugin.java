@@ -120,7 +120,7 @@ public class SecretVillagerPlugin extends JavaPlugin {
 		
 		switch (type) {
 		case INVINCIBLE:
-			sVil = new InvicibleVillager(villager);
+			sVil = new InvincibleVillager(villager);
 			break;
 		case TRADE_SWAPPED:
 			break;
