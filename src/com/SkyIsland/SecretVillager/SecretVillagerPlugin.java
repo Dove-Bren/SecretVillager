@@ -47,7 +47,7 @@ public class SecretVillagerPlugin extends JavaPlugin {
 			
 			villager.set("trades.trade" + "0" + ".reward", VillagerTrade.getRewardItem(trade).serialize());
 			villagers.add(new TradeVillager(villager));
-			extractVillagers(config);
+			extractVillagers(villagerConfig);
 		}
 	};
 	
@@ -145,18 +145,18 @@ public class SecretVillagerPlugin extends JavaPlugin {
 			getLogger().info("\n\n\nUnable to save config files for SecretVillager!!!!!!!!!!!!!!!!!!!\n\n\n");
 		}
 		int i = 0;
-		config = null;
-		config = new YamlConfiguration();
+		villagerConfig = null;
+		villagerConfig = new YamlConfiguration();
 		//Iterate over every villager and save out their data to a unique key
 		for (SecretVillager SV : villagers) {
 			//Saves Villager name as "Villager_n"
-			config.set("Villager_" + i, SV.toConfig());
+			villagerConfig.set("Villager_" + i, SV.toConfig());
 			//Unload Villager from memory
 			SV.unload();
 			i++;
 		}
 		try {
-			config.save(villagerFile);
+			villagerConfig.save(villagerFile);
 		} catch (IOException e) {
 			//This should never ever happen unless something catastrophic happens
 			//Pray to Jesus that it doesn't
@@ -183,7 +183,7 @@ public class SecretVillagerPlugin extends JavaPlugin {
 		YamlConfiguration vilConfig = new YamlConfiguration();
 		villagers = villager.getKeys(false);
 		for (String s : villagers) {
-			if (s.isEmpty())
+			if (s.trim().isEmpty())
 				continue;
 			vilConfig.get(s);
 			createFromConfig(vilConfig);
@@ -191,7 +191,7 @@ public class SecretVillagerPlugin extends JavaPlugin {
 	}
 	
 	private SecretVillager createFromConfig(YamlConfiguration villager) {
-		if (villager.getInt("Type", -1) == -1) {
+		if (villager.getInt("type", -1) == -1) {
 			//defaults to -1
 			getLogger().info("Error when parsing villagers: Unable to find villager type in " + villager.getName());
 			return null;

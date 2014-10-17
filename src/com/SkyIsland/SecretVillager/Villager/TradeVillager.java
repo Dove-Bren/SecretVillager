@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import com.SkyIsland.SecretVillager.SecretVillagerPlugin;
@@ -30,8 +32,54 @@ import com.gmail.fedmanddev.VillagerTradeApi;
  */
 public class TradeVillager implements SecretVillager {
 	
+	private BukkitRunnable initTrades = new BukkitRunnable() {
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public void run() {
+			//get trades and load them up
+			//first clear out old trades
+			
+			VillagerTradeApi.clearTrades(villager);
+			
+			ConfigurationSection trades = config.getConfigurationSection("trades"), tradeS;
+			ItemStack item1, item2, reward;
+			for (String key : trades.getKeys(false)) {
+							
+				tradeS = trades.getConfigurationSection(key);
+				Object i1, i2, re;
+				i1 =  tradeS.get("item1", null);
+				i2 = tradeS.get("item2", null);
+				re = tradeS.get("reward", null);
+				if (i1 == null || re == null) {
+					continue;
+				}
+				item1 = ItemStack.deserialize((Map<String, Object>) i1);
+				if (i2 != null) {
+					item2 = ItemStack.deserialize((Map<String, Object>) i2);
+				}
+				else {
+					item2 = null;
+				}
+				reward = ItemStack.deserialize((Map<String, Object>) re);
+				VillagerTrade trade;
+				
+				if (item2 != null) {
+					trade = new VillagerTrade(item1, item2, reward);
+				}
+				else {
+					trade = new VillagerTrade(item1, reward);
+				}
+				
+				addTrade(trade);
+			}
+		}
+	};
+	
+	
 	private Villager villager;
 	private List<VillagerTrade> tradeList;
+	private YamlConfiguration config;
 	
 	public TradeVillager(YamlConfiguration config) {
 		tradeList = new LinkedList<VillagerTrade>();
@@ -92,7 +140,9 @@ public class TradeVillager implements SecretVillager {
 			 * 		
 			 */
 			trades.set("trade" + index + ".item1", VillagerTrade.getItem1(trade).serialize());
-			trades.set("trade" + index + ".item2", VillagerTrade.getItem2(trade).serialize());
+			if (VillagerTrade.getItem2(trade) != null) {
+				trades.set("trade" + index + ".item2", VillagerTrade.getItem2(trade).serialize());
+			}
 			
 			trades.set("trade" + index + ".reward", VillagerTrade.getRewardItem(trade).serialize());
 			
@@ -106,6 +156,8 @@ public class TradeVillager implements SecretVillager {
 	@Override
 	public void load(YamlConfiguration config) {
 		unload();
+		
+		this.config = config;
 		
 		World world;
 		Location location;
@@ -137,37 +189,7 @@ public class TradeVillager implements SecretVillager {
 		villager.setCustomName(name);
 		villager.setProfession(prof);
 		
-		//get trades and load them up
-		ConfigurationSection trades = config.getConfigurationSection("trades"), tradeS;
-		ItemStack item1, item2, reward;
-		for (String key : trades.getKeys(false)) {
-						
-			tradeS = trades.getConfigurationSection(key);
-			Object i1, i2, re;
-			i1 =  tradeS.get("item1", null);
-			i2 = tradeS.get("item2", null);
-			re = tradeS.get("reward", null);
-			if (i1 == null || re == null) {
-				continue;
-			}
-			item1 = ItemStack.deserialize((Map<String, Object>) i1);
-			if (i2 != null) {
-				item2 = ItemStack.deserialize((Map<String, Object>) i2);
-			}
-			else {
-				item2 = null;
-			}
-			reward = ItemStack.deserialize((Map<String, Object>) re);
-			VillagerTrade trade;
-			if (item2 != null) {
-				trade = new VillagerTrade(item1, item2, reward);
-			}
-			else {
-				trade = new VillagerTrade(item1, reward);
-			}
-			
-			this.addTrade(trade);
-		}
+		initTrades.runTaskLater(SecretVillagerPlugin.plugin, 20);
 	}
 
 	@Override
