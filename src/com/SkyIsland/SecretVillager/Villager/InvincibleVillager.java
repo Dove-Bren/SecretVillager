@@ -60,6 +60,8 @@ public class InvincibleVillager implements SecretVillager, Listener{
 
 	@Override
 	public void load(YamlConfiguration config) {
+		unload();
+		
 		World world;
 		Location location;
 		String name;
@@ -113,6 +115,7 @@ public class InvincibleVillager implements SecretVillager, Listener{
 	public void unload() {
 		if (villager != null && !villager.isDead()) {
 			villager.damage(villager.getMaxHealth());
+			villager = null;
 		}
 	}
 }
