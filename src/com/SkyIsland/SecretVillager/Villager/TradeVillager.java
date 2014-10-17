@@ -2,7 +2,6 @@ package com.SkyIsland.SecretVillager.Villager;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -33,7 +32,6 @@ public class TradeVillager implements SecretVillager {
 	
 	private BukkitRunnable initTrades = new BukkitRunnable() {
 		
-		@SuppressWarnings("unchecked")
 		@Override
 		public void run() {
 			//get trades and load them up
@@ -46,21 +44,21 @@ public class TradeVillager implements SecretVillager {
 			for (String key : trades.getKeys(false)) {
 							
 				tradeS = trades.getConfigurationSection(key);
-				Object i1, i2, re;
-				i1 =  tradeS.get("item1", null);
-				i2 = tradeS.get("item2", null);
-				re = tradeS.get("reward", null);
-				if (i1 == null || re == null) {
+				//Object i1, i2, re;
+				item1 =  tradeS.getItemStack("item1", null);
+				item2 = tradeS.getItemStack("item2" , null);
+				reward = tradeS.getItemStack("reward", null);
+				if (item1 == null || reward == null) {
 					continue;
-				}
-				item1 = ItemStack.deserialize((Map<String, Object>) i1);
-				if (i2 != null) {
-					item2 = ItemStack.deserialize((Map<String, Object>) i2);
-				}
-				else {
-					item2 = null;
-				}
-				reward = ItemStack.deserialize((Map<String, Object>) re);
+  		    	}
+//				item1 = ItemStack.deserialize((Map<String, Object>) i1);
+//				if (i2 != null) {
+//					item2 = ItemStack.deserialize((Map<String, Object>) i2);
+//				}
+//				else {
+//					item2 = null;
+//				}
+//				reward = ItemStack.deserialize((Map<String, Object>) re);
 				VillagerTrade trade;
 				
 				if (item2 != null) {
@@ -117,7 +115,7 @@ public class TradeVillager implements SecretVillager {
 		 */
 		YamlConfiguration config = new YamlConfiguration();
 		
-		config.set("type", VillagerType.TRADE_SWAPPED.toString());
+		config.set("type", VillagerType.TRADE_SWAPPED.getIndex());
 		config.set("world", villager.getWorld().getName());
 		config.set("location", villager.getLocation().toVector());
 		config.set("name", villager.getCustomName());
@@ -138,12 +136,12 @@ public class TradeVillager implements SecretVillager {
 			 * 		item1:
 			 * 		
 			 */
-			trades.set("trade" + index + ".item1", VillagerTrade.getItem1(trade).serialize());
+			trades.set("trade" + index + ".item1", VillagerTrade.getItem1(trade));//.serialize());
 			if (VillagerTrade.getItem2(trade) != null) {
-				trades.set("trade" + index + ".item2", VillagerTrade.getItem2(trade).serialize());
+				trades.set("trade" + index + ".item2", VillagerTrade.getItem2(trade));//.serialize());
 			}
 			
-			trades.set("trade" + index + ".reward", VillagerTrade.getRewardItem(trade).serialize());
+			trades.set("trade" + index + ".reward", VillagerTrade.getRewardItem(trade));//.serialize());
 			
 			index++;
 		}
@@ -151,7 +149,6 @@ public class TradeVillager implements SecretVillager {
 		return config;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void load(ConfigurationSection config) {
 		unload();
