@@ -21,6 +21,7 @@ public class InvicibleVillager implements SecretVillager, Listener{
 	
 	public InvicibleVillager(YamlConfiguration villagerInfo) {
 		Bukkit.getPluginManager().registerEvents(this, SecretVillagerPlugin.plugin);
+		this.load(villagerInfo);
 	}
 	
 	@EventHandler
