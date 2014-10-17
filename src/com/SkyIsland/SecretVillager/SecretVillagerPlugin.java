@@ -1,12 +1,17 @@
 package com.SkyIsland.SecretVillager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Set;
-
+import java.util.LinkedList;
+import java.util.List;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Villager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import com.SkyIsland.SecretVillager.Villager.InvincibleVillager;
 import com.SkyIsland.SecretVillager.Villager.SecretVillager;
@@ -15,14 +20,33 @@ public class SecretVillagerPlugin extends JavaPlugin {
 	
 	public static SecretVillagerPlugin plugin;
 	
-	private static final double version = 1.00;
+	private static final double version = 0.143;
 	
 	private YamlConfiguration config;
 	private YamlConfiguration villagerConfig;
 	private File configFile, villagerFile;
+	private List<SecretVillager> villagers;
+	
+	private BukkitRunnable waitForLoad = new BukkitRunnable(){
+		
+		public void run() {
+			YamlConfiguration villager = new YamlConfiguration();
+			Vector vect = new Vector(1494, 64, 60);
+			villager.set("name", "the one");
+			villager.set("world", "HomeWorld");
+			villager.set("location", vect);
+			villager.set("profession", Villager.Profession.BUTCHER.toString());
+			
+			villagers.add(new InvincibleVillager(villager));
+		}
+	};
 	
 	@Override
 	public void onLoad() {
+		if (!getDataFolder().exists()) {
+			getDataFolder().mkdirs();
+		}
+		
 		configFile = new File(this.getDataFolder(), "config.yml");
 		if (!configFile.exists()) {
 			getLogger().info("Configuration file for Secret Villager plugin not found in data folder!\n"
@@ -39,6 +63,7 @@ public class SecretVillagerPlugin extends JavaPlugin {
 		}
 		else {
 			try {
+				config = new YamlConfiguration();
 				config.load(configFile);
 				if (config.getDouble("version", 0.00) - SecretVillagerPlugin.version > .00001) {
 					//if versions aren't equal
@@ -72,6 +97,17 @@ public class SecretVillagerPlugin extends JavaPlugin {
 				return;
 			}
 		}
+		else {
+			villagerConfig = new YamlConfiguration();
+			try {
+				villagerConfig.load(villagerFile);
+			} catch (IOException
+					| InvalidConfigurationException e) {
+				getLogger().info("Unable to load villager config from \"villagers.yml\" in resource folder.\nAborting plugin load...");
+				config = null;
+				villagerConfig = null;
+			}
+		}
 		
 		
 	}
@@ -85,8 +121,9 @@ public class SecretVillagerPlugin extends JavaPlugin {
 			return;
 		}
 		SecretVillagerPlugin.plugin = this;
+		villagers = new LinkedList<SecretVillager>();
 		
-		
+		this.waitForLoad.runTaskLater(this, 10);
 	}
 	
 	@Override
@@ -98,15 +135,23 @@ public class SecretVillagerPlugin extends JavaPlugin {
 			getLogger().info("\n\n\nUnable to save config files for SecretVillager!!!!!!!!!!!!!!!!!!!\n\n\n");
 		}
 		
+		for (SecretVillager SV : villagers) {
+			SV.unload();
+		}
 		
+		villagers.clear();
 	}
 	
 	
 	
 	
 	private YamlConfiguration defaultConfig() {
+		YamlConfiguration def = new YamlConfiguration();
 		
-		return null;
+		def.set("version", SecretVillagerPlugin.version);
+		
+		
+		return def;
 	}
 	
 	private void extractVillager(YamlConfiguration villager) {
