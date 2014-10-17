@@ -49,4 +49,11 @@ public interface SecretVillager {
 	 */
 	public void setVillager(Entity e);
 	
+	/**
+	 * Unloads the villager.<br />
+	 * Implementations should make sure to <i>kill</i> their villager entity and just create a new one
+	 * on instantiation
+	 */
+	public void unload();
+	
 }
