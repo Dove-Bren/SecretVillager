@@ -57,16 +57,4 @@ public class InvicibleVillager implements SecretVillager, Listener{
 		}
 		villager = (Villager) e;
 	}
-
-	@Override
-	public void load() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void unload() {
-		// TODO Auto-generated method stub
-		
-	}
 }
