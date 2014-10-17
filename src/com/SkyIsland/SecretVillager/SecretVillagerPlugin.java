@@ -30,6 +30,14 @@ public class SecretVillagerPlugin extends JavaPlugin {
 	private BukkitRunnable waitForLoad = new BukkitRunnable(){
 		
 		public void run() {
+			YamlConfiguration villager = new YamlConfiguration();
+			Vector vect = new Vector(1494, 64, 60);
+			villager.set("name", "the one");
+			villager.set("world", "HomeWorld");
+			villager.set("location", vect);
+			villager.set("profession", Villager.Profession.BUTCHER.toString());
+			
+			villagers.add(new InvincibleVillager(villager));
 			extractVillagers(config);
 		}
 	};
