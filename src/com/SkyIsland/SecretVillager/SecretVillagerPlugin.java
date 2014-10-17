@@ -2,6 +2,7 @@ package com.SkyIsland.SecretVillager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -108,6 +109,15 @@ public class SecretVillagerPlugin extends JavaPlugin {
 		return null;
 	}
 	
+	private void extractVillager(YamlConfiguration villager) {
+		Set <String> villagers;
+		YamlConfiguration vilConfig = new YamlConfiguration();
+		villagers = villager.getKeys(false);
+		for (String s : villagers) {
+			vilConfig.get(s);
+			createFromConfig(vilConfig);
+		}
+	}
 	private SecretVillager createFromConfig(YamlConfiguration villager) {
 		if (villager.getInt("Type", -1) == -1) {
 			//defaults to -1
