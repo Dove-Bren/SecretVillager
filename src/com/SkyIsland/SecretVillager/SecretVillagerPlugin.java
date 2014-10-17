@@ -14,7 +14,7 @@ public class SecretVillagerPlugin extends JavaPlugin {
 	
 	public static SecretVillagerPlugin plugin;
 	
-	private static final double version = 1.00;
+	private static final double version = 0.143;
 	
 	private YamlConfiguration config;
 	private YamlConfiguration villagerConfig;
