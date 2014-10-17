@@ -183,6 +183,8 @@ public class SecretVillagerPlugin extends JavaPlugin {
 		YamlConfiguration vilConfig = new YamlConfiguration();
 		villagers = villager.getKeys(false);
 		for (String s : villagers) {
+			if (s.isEmpty())
+				continue;
 			vilConfig.get(s);
 			createFromConfig(vilConfig);
 		}
