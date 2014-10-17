@@ -185,8 +185,7 @@ public class SecretVillagerPlugin extends JavaPlugin {
 		for (String s : villagers) {
 			if (s.trim().isEmpty())
 				continue;
-			vilConfig.get(s);
-			createFromConfig(vilConfig);
+			createFromConfig((YamlConfiguration)villager.get(s));
 		}
 	}
 	
