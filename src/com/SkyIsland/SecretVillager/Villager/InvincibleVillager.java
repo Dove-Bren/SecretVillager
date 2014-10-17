@@ -69,7 +69,7 @@ public class InvincibleVillager implements SecretVillager, Listener{
 		world = Bukkit.getWorld((String) config.get("world", null)); //homeworld for the lulz
 		vect = config.getVector("location", null);
 		
-		prof = (Villager.Profession) config.get("profession", null);
+		prof = Villager.Profession.valueOf((String) config.get("profession", null));
 		name = (String) config.get("name", null);
 		
 		//check that everything was successful
