@@ -299,8 +299,8 @@ public class SecretVillagerPlugin extends JavaPlugin {
 			return;
 		}
 		//are we going to save out the new location of villagers each time the plugin is unloaded?
-		this.update = config.getBoolean("update_villagers", true);
-		
+		this.update = config.getBoolean("update_villagers", false);
+		getLogger().info("Update set to: " + update + "\n\n");
 		SecretVillagerPlugin.plugin = this;
 		villagers = new LinkedList<SecretVillager>();
 		
@@ -311,7 +311,7 @@ public class SecretVillagerPlugin extends JavaPlugin {
 	public void onDisable() {
 		try {
 			config.save(configFile);
-			villagerConfig.save(villagerFile);
+			//villagerConfig.save(villagerFile); //whut it  gets saved below
 		} catch (IOException e) {
 			getLogger().info("\n\n\nUnable to save config files for SecretVillager!!!!!!!!!!!!!!!!!!!\n\n\n");
 		}
