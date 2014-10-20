@@ -6,9 +6,19 @@ import java.util.Set;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -17,7 +27,7 @@ import com.SkyIsland.SecretVillager.Villager.InvincibleVillager;
 import com.SkyIsland.SecretVillager.Villager.SecretVillager;
 import com.SkyIsland.SecretVillager.Villager.TradeVillager;
 
-public class SecretVillagerPlugin extends JavaPlugin {
+public class SecretVillagerPlugin extends JavaPlugin implements Listener {
 	
 	public static SecretVillagerPlugin plugin;
 	
@@ -123,6 +133,7 @@ public class SecretVillagerPlugin extends JavaPlugin {
 		villagers = new LinkedList<SecretVillager>();
 		
 		this.waitForLoad.runTaskLater(this, 10);
+		Bukkit.getPluginManager().registerEvents(this, this);
 	}
 	
 	@Override
@@ -211,5 +222,39 @@ public class SecretVillagerPlugin extends JavaPlugin {
 		
 		
 		return sVil;
+	}
+	
+	@EventHandler
+	public void onTeleportScroll(PlayerInteractEvent e) {
+		if (!e.isCancelled()) {
+			if (e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+				if (!e.getPlayer().isDead()) {
+					if (e.getItem().getType() == Material.MAP) {
+						ItemStack map = e.getItem();
+						ItemMeta meta = map.getItemMeta();
+						if (meta.getDisplayName().compareTo("Return to Spawn Scroll") == 0) {
+							//make sure the lore is right and it's not just something renamed to a return to...
+							List<String> lore = meta.getLore();
+							if (lore == null || lore.isEmpty() || lore.size() != 2) {
+								return;
+							}
+							if (lore.get(0).compareTo(ChatColor.GREEN + "Teleports the user back to spawn.") == 0)
+							if (lore.get(1).compareTo(ChatColor.RED + "Scroll is destroyed upon use!" + ChatColor.RESET) == 0) {
+								//everything is good AS long as they are in the homeoworld
+								e.setCancelled(true);
+								Player player = e.getPlayer();
+								if (player.getWorld().getName().compareTo("HomeWorld") != 0) {
+									player.sendMessage("I'm sorry, but you must be in the HomeWorld to use this scroll.");
+									return;
+								}
+								//else
+								player.teleport(player.getWorld().getSpawnLocation());
+								return;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
