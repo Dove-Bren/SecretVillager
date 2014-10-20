@@ -107,9 +107,13 @@ public class SecretVillagerPlugin extends JavaPlugin implements Listener {
 			villagerConfig = new YamlConfiguration();
 			try {
 				villagerConfig.load(villagerFile);
-			} catch (IOException
-					| InvalidConfigurationException e) {
+			} catch (IOException e) {
 				getLogger().info("Unable to load villager config from \"villagers.yml\" in resource folder.\nAborting plugin load...");
+				config = null;
+				villagerConfig = null;
+			} catch (InvalidConfigurationException e) {
+				getLogger().info("Unable to load villager config from \"villagers.yml\" in resource folder.\nAborting plugin load...");
+				getLogger().info(e.getMessage());
 				config = null;
 				villagerConfig = null;
 			}
