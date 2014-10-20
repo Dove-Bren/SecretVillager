@@ -2,33 +2,20 @@ package com.SkyIsland.SecretVillager;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Set;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Villager;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.SpawnEgg;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
-import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionType;
 
 import com.SkyIsland.SecretVillager.Villager.InvincibleTradeVillager;
 import com.SkyIsland.SecretVillager.Villager.InvincibleVillager;
 import com.SkyIsland.SecretVillager.Villager.SecretVillager;
 import com.SkyIsland.SecretVillager.Villager.TradeVillager;
-import com.gmail.fedmanddev.VillagerTrade;
 
 public class SecretVillagerPlugin extends JavaPlugin {
 	
