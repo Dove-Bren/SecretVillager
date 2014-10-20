@@ -228,7 +228,7 @@ public class SecretVillagerPlugin extends JavaPlugin implements Listener {
 		return sVil;
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onTeleportScroll(PlayerInteractEvent e) {
 		if (!e.isCancelled()) {
 			if (e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
