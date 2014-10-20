@@ -230,8 +230,8 @@ public class SecretVillagerPlugin extends JavaPlugin implements Listener {
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onTeleportScroll(PlayerInteractEvent e) {
-		if (!e.isCancelled()) {
-			if (e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+		if (e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+			if (!e.isCancelled()) {
 				if (!e.getPlayer().isDead()) {
 					if (e.getItem().getType() == Material.MAP) {
 						ItemStack map = e.getItem();
